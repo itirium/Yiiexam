@@ -62,4 +62,9 @@ class Item extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Backet::className(), ['item_id' => 'id']);
     }
+    
+    public  function getInfoItemBy($id){
+        $data= Item::find()->asArray()->where('id=:id',['id'=>$id])->one();
+        return $data;
+    }
 }

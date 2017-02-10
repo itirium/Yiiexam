@@ -9,7 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
-
+use app\models\Backet;
 /**
  * ItemController implements the CRUD actions for Item model.
  */
@@ -57,7 +57,12 @@ class ItemController extends Controller
         ]);
     }
     
-    
+    public function actionAddtobacket($id,$count)
+    {
+         $backet= new Backet();
+         $backet->addToBacketCart($id,$count);
+         
+    }
 
     /**
      * Creates a new Item model.
@@ -93,7 +98,7 @@ class ItemController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            if($model->file= UploadedFile::getInstance($model, 'file'))
+            if($model->file = UploadedFile::getInstance($model, 'file'))
             {
                 $model->file->saveAs('uploads/'.$model->file->baseName.'.'.$model->file->extension);
                 $model->imagesrc='uploads/'.$model->file->baseName.'.'.$model->file->extension;

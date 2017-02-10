@@ -4,6 +4,8 @@ namespace app\models;
 
 use Yii;
 
+use yii\db\Query;
+
 /**
  * This is the model class for table "backet".
  *
@@ -46,7 +48,7 @@ class Backet extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'item_id' => 'Item ID',
-            'count' => 'Count',
+            'count' => 'Кількість',
         ];
     }
 
@@ -68,16 +70,34 @@ class Backet extends \yii\db\ActiveRecord
     
     public function  addTobacket($item_id)
     {
-        \Yii::$app->user
-//        $cart = ($cart = Backet::findOne(Yii::$app->user->id)) ? $cart : new Backet();
-//        $cart->user_id = Yii::$app->user->id;
-//        $cart->item_id =$item_id;
-//        if($profile->save()):
-//            $user = $this->user ? $this->user : User::findOne(Yii::$app->user->id);
-//            $username = Yii::$app->request->post('User')['username'];
-//            $user->username = isset($username) ? $username : $user->username;
-//            return $user->save() ? true : false;
-//        endif;
-        return false;
+        
+        $cart =($cart=Backet::find()->where(['user_id'=>Yii::$app->user->id,'item_id'=>$item_id])->one())?$cart:new Backet();
+        $cart->user_id = Yii::$app->user->id;
+        $cart->item_id =$item_id;
+        $cart->count+=1;
+        $cart->save();
+        //return ($cart->save())?true:false;
     }
+    public function  addToBacketCart($item_id,$item_count)
+    {
+        
+        $cart =($cart=Backet::find()->where(['user_id'=>Yii::$app->user->id,'item_id'=>$item_id])->one())?$cart:new Backet();
+        $cart->user_id = Yii::$app->user->id;
+        $cart->item_id =$item_id;
+        $cart->count+=$item_count;
+        //$cart->save();
+        return ($cart->save())?true:false;
+    }
+    public static function getCartQuery($userid){
+      $query=new Query();
+        $query->select('*')
+         ->from ([Backet::tableName()])
+         ->leftJoin(Item::tableName(),'id=item_id')
+         ->where(['user_id'=>':uid'],[':uid'=>$userid])
+                ->all();
+        return $query;
+    }
+    
+       
+    
 }

@@ -11,6 +11,8 @@ use yii\filters\VerbFilter;
 use app\models\ContactForm;
 //use app\models\User;
 //use app\models\Profile;
+use app\components\BacketWidget;
+
 
 class SiteController extends Controller
 {
@@ -156,6 +158,12 @@ class SiteController extends Controller
         return $this->render('about');
     }
     
+    public function actionShowcart()
+    {
+        return BacketWidget::widget();
+    }
+
+
 //    public function actionProfile(){
 //        $model=($model= Profile::findOne(Yii::$app->user->id))?$model:new Profile();
 //        

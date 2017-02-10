@@ -96,6 +96,71 @@ AppAsset::register($this);
     </div>
 </footer>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="shoppingcart">  
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Додати у кошик</h4>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              
+              <div class="col-lg-3">
+                  <img src="" id="imgPreview" alt="" width="150">
+              </div>                  
+              <div class="col-lg-3">
+                  <p>Товар: <span id="txtItemName"></span></p>
+                  <p>Ціна: <span id="txtItemPrice"></span></p>
+                  <p>Опис: <span id="txtItemDescription"></span></p>
+                  <input type="hidden" id="itemid"  name="itemid" value="0"/>
+                  <input type="number" id="intCount" name="intCount" min="0" max="20" value="1"/>
+              </div>
+              
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Відбій</button>
+        <button type="submit" class="btn btn-primary" data-dismiss="modal" onclick="addtoBacketCart()" >Додати до кошику</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->    
+    <script>
+        function addtoCart(id){
+            img=$('#img_'+id).attr("src");    
+            
+            txtName=$('#txtItName_'+id).text();
+            txtDesc=$('#txtItDesc_'+id).text();
+            txtPrice=$('#txtItPrice_'+id).text();
+            
+            $("#imgPreview").attr({
+                'src':img
+            });
+            $("#txtItemName").text(txtName);
+            $("#txtItemDescription").text(txtDesc);
+            $("#txtItemPrice").text(txtPrice);
+            $('#itemid').val(id);
+            $('#intCount').val(1);
+            $('#shoppingcart').modal();            
+        }
+        function addtoBacketCart(){            
+            
+            itemid=$('#itemid').val();
+            itemcount=$('#intCount').val();
+            if(itemcount>0)
+            {
+            $.get('<?=Yii::$app->homeUrl ?>?r=item%2Faddtobacket/' ,{'id' : itemid , 'count' : itemcount}, function(data){});
+            $('#myBlock').load('<?=Yii::$app->homeUrl ?>?r=site%2Fshowcart');
+            }
+            else{
+                alert("Введіть правильну кількість товару!");
+            }
+        }
+        
+        
+        
+    </script>
 <?php $this->endBody() ?>
 </body>
 </html>
