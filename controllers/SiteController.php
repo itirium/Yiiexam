@@ -12,7 +12,7 @@ use app\models\ContactForm;
 //use app\models\User;
 //use app\models\Profile;
 use app\components\BacketWidget;
-
+use app\models\Postchat;
 
 class SiteController extends Controller
 {
@@ -162,7 +162,35 @@ class SiteController extends Controller
     {
         return BacketWidget::widget();
     }
+    
+    public function actionPost()
+    {
+        
+        $model = new Postchat();
+       
+        if(isset($_POST['Postchat']))
+        {
+            
+            $model->attributes=Yii::$app->request->post('Postchat');
+            if($model->validate())
+            {
+                $model->postchat();                
+                return $this->render('../components/view/chat',['model'=>$model,]);
+            }
+        }
+        return $this->render('../components/view/chat',['model'=>$model,]);
+    }
 
+   public function actionPostMessage()
+   {
+     $model = new \app\models\Postchat(); 
+     if (Yii::$app->request->isAjax && $model->load(Yii::$app->request>post())) {  // если получаем AJAX и POST запрос
+      Yii::$app->response->format = Response::FORMAT_JSON; 
+      return ActiveForm::validate($model); // выполняем валидацию формы 
+    } 
+   return $this->render('registration', ['model' => $model]); // передаем модель в представление
+   }
+   
 
 //    public function actionProfile(){
 //        $model=($model= Profile::findOne(Yii::$app->user->id))?$model:new Profile();
