@@ -10,6 +10,8 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
 use app\models\Backet;
+use app\models\OrderForm;
+        
 /**
  * ItemController implements the CRUD actions for Item model.
  */
@@ -63,6 +65,34 @@ class ItemController extends Controller
          $backet->addToBacketCart($id,$count);
          
     }
+    public function actionDelfrombacket($iddel)
+    {
+         $backet= new Backet();
+         $backet->delFromBacketCart($iddel);
+         return $this->goHome();
+         
+    }
+    public function actionDeleteallbacket()
+    {
+         $backet= new Backet();
+         $backet->delAllFromBacketCart();
+         return $this->goHome();
+         
+    }
+    
+     public function  actionPlaceorder(){      
+        
+     $model = new OrderForm();
+        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
+            Yii::$app->session->setFlash('orderFormSubmitted');
+
+            return $this->refresh();
+        }
+        return $this->render('order', [
+            'model' => $model,
+        ]);
+    }
+    
 
     /**
      * Creates a new Item model.
@@ -126,6 +156,7 @@ class ItemController extends Controller
         return $this->redirect(['index']);
     }
 
+    
     /**
      * Finds the Item model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -141,4 +172,5 @@ class ItemController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
 }

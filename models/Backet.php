@@ -97,7 +97,23 @@ class Backet extends \yii\db\ActiveRecord
                 ->all();
         return $query;
     }
-    
-       
+    public function  delFromBacketCart($iddel)
+    {
+        
+        $todel=Backet::find()->where('id='.$iddel)->all();
+        foreach ($todel as $delvalue) {
+            $delvalue->delete();            
+        }    
+        return true;
+    }
+    public function  delAllFromBacketCart()
+    {
+        
+        $todel=Backet::find()->where('user_id='.Yii::$app->user->id)->all();
+        foreach ($todel as $delvalue) {
+            $delvalue->delete();            
+        }    
+        return true;
+    }    
     
 }
