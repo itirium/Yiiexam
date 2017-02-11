@@ -71,15 +71,15 @@ $this->params['breadcrumbs'][] = $this->title;
 <div>
     <?=(Yii::$app->user->isGuest)? '<br /> <h4>Уввійдіть у систему</h4>' :''; ?>
     
-    <?= (((is_null($cartcount))||($cartcount==0)))? '<h4>Додайте товар до кошику</h4>' :'<button type="button" class="btn btn-success" onclick="placeorder()">Оформити Замовлення</button>'
-            . '<br /><button type="button" class="btn btn-danger" onclick="delallfrombacket()">Видалити усе с кошика</button>'; ?>
+    <?= (((is_null($cartcount))||($cartcount==0)))? '<h4>Додайте товар до кошику</h4>' :
+            '<button type="button" class="btn btn-success" onclick="placeorder();">Оформити Замовлення</button><br /><button type="button" class="btn btn-danger" onclick="delallfrombacket();">Видалити усе с кошика</button>'; ?>
     
     
 </div>
 <script>
     function placeorder()
     {
-        $.get('<?=Yii::$app->homeUrl ?>?r=item%2Fplaceorder', function(data){});
+        $.get('<?=Yii::$app->homeUrl ?>?r=item/placeorder', function(data){});
     }
     
     function delallfrombacket()
