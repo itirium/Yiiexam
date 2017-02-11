@@ -21,14 +21,12 @@ public function rules()
     }
 
     
-    public function postchat() 
-    {
-        
+    public function postchat($message) 
+    {        
      $post=new Post();
-     $post->userid = Yii::$app->user->identity->id;
-//     $chat->username = Yii::$app->user->identity->username;
-     $post->message = $this->post;
-     $post->messagedt = '';
+     $post->user_id = Yii::$app->user->identity->id;
+     $post->post = $message;
+     $post->created_at = new \DateTime();
      return $post->save();        
     }
     

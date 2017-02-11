@@ -104,9 +104,16 @@ class ItemController extends Controller
         $model = new Item();
 
         if ($model->load(Yii::$app->request->post())) {
+            if(!is_null(UploadedFile::getInstance($model, 'file')))
+            {
             $model->file= UploadedFile::getInstance($model, 'file');
-            $model->file->saveAs('uploads/'.$model->file->baseName.'.'.$model->file->extension);
+            $model->file->saveAs('uploads/'.$model->file->baseName.'.'.$model->file->extension);            
             $model->imagesrc='uploads/'.$model->file->baseName.'.'.$model->file->extension;
+            }
+            else
+            {
+                $model->imagesrc='';
+            }
             $model->save();
             
             return $this->redirect(['view', 'id' => $model->id]);

@@ -8,10 +8,6 @@ use yii\db\Query;
 use yii\grid\ActionColumn;
 /* @var $this yii\web\View */
 
-
-
-
-
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -71,10 +67,14 @@ $this->params['breadcrumbs'][] = $this->title;
      ?>    
 </div>
 
-<div>Усього товару: <?= $cartcount;?> <br /> на сумму <b><?= number_format($cartsum,2,'.','');?> </b></div>
+<div>Усього товару: <?= number_format($cartcount,0,'.','');?>шт <br /> на сумму <b><?= number_format($cartsum,2,'.','');?>грн </b></div>
 <div>
-    <button type="button" class="btn btn-success" onclick="placeorder()">Оформити Замовлення</button>
-    <button type="button" class="btn btn-danger" onclick="delallfrombacket()">Видалити усе с кошика</button>
+    <?=(Yii::$app->user->isGuest)? '<br /> <h4>Уввійдіть у систему</h4>' :''; ?>
+    
+    <?= (((is_null($cartcount))||($cartcount==0)))? '<h4>Додайте товар до кошику</h4>' :'<button type="button" class="btn btn-success" onclick="placeorder()">Оформити Замовлення</button>'
+            . '<br /><button type="button" class="btn btn-danger" onclick="delallfrombacket()">Видалити усе с кошика</button>'; ?>
+    
+    
 </div>
 <script>
     function placeorder()

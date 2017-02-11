@@ -13,6 +13,9 @@ use app\models\ContactForm;
 //use app\models\Profile;
 use app\components\BacketWidget;
 use app\models\Postchat;
+use app\models\Post;
+use yii\db\Query;
+
 
 class SiteController extends Controller
 {
@@ -67,7 +70,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('index');   
     }
 
     /**
@@ -100,7 +103,7 @@ class SiteController extends Controller
 //             ]
 //         );
 //    }
-
+   
 //    public function actionLogin()
 //    {
 //        if (!Yii::$app->user->isGuest):
@@ -163,34 +166,27 @@ class SiteController extends Controller
         return BacketWidget::widget();
     }
     
-    public function actionPost()
-    {
-        
-        $model = new Postchat();
-       
-        if(isset($_POST['Postchat']))
-        {
-            
-            $model->attributes=Yii::$app->request->post('Postchat');
-            if($model->validate())
-            {
-                $model->postchat();                
-                return $this->render('../components/view/chat',['model'=>$model,]);
-            }
+    public function actionPostmessage()
+    {                  
+        $string = Yii::$app->request->post('string');        
+        if ((!is_null($string))&&($string!='')) {         
+            $post= new Post();
+            echo $post->InsertPost($string);        
         }
-        return $this->render('../components/view/chat',['model'=>$model,]);
-    }
+        return $this->goBack();
+    }   
+               
 
-   public function actionPostMessage()
+   public function actionPostMesage()
    {
-     $model = new \app\models\Postchat(); 
+     $model = new Postchat(); 
      if (Yii::$app->request->isAjax && $model->load(Yii::$app->request>post())) {  // если получаем AJAX и POST запрос
       Yii::$app->response->format = Response::FORMAT_JSON; 
       return ActiveForm::validate($model); // выполняем валидацию формы 
     } 
-   return $this->render('registration', ['model' => $model]); // передаем модель в представление
+   return $this->render('postchat', ['model' => $model]); // передаем модель в представление
    }
-   
+
 
 //    public function actionProfile(){
 //        $model=($model= Profile::findOne(Yii::$app->user->id))?$model:new Profile();

@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 
+
 /**
  * This is the model class for table "post".
  *
@@ -31,7 +32,6 @@ class Post extends \yii\db\ActiveRecord
     {
         return [
             [['post'], 'string'],
-            [['created_at'], 'safe'],
             [['user_id'], 'integer'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -57,4 +57,17 @@ class Post extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+    
+    public function InsertPost($mess){
+        $post = new Post();            
+        //$string = 'test';
+                //Yii::$app->request->post('string');        
+       // if (!is_null($string)) {         
+            $post->user_id = Yii::$app->user->identity->id;
+            $post->post = $mess;
+            $post->created_at = date("Y-m-d H:i:s");
+           // $post->save();                   
+        return $post->save();       
+    }
+    
 }

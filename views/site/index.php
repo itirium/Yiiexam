@@ -8,13 +8,12 @@ use yii\helpers\Html;
 use app\components\ChatWidget;
 use app\components\BacketWidget;
 
-$this->title = 'Yii Paracordium Магазин';
+$this->title = 'Yii Paracordium';
 ?>
 <div class="site-index">
     <div class="row">
-        <div class="col-md-2">
-            <h4>Чат</h4>
-            <?= ChatWidget::widget(); ?>
+        <div class="col-md-2" id="chatBlock"> 
+           <?= ChatWidget::widget(); ?>
         </div>
         <div class="col-md-8">
             <div class="jumbotron">
@@ -41,9 +40,9 @@ $this->title = 'Yii Paracordium Магазин';
             <img src="img/carousel03.jpg" alt="img3">
             </center>
         </div>
-        <div class="item">
+        <div class="item">   
             <center>
-            <img src="img/carousel04.jpg" alt="img4">
+            <img src="img/carousel04.jpg" alt="img4"> 
             </center>
         </div>
     </div><a class="left carousel-control" href="#custom-bootstrap-carousel" role="button" data-slide="prev"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span><span class="sr-only">Previous</span></a><a class="right carousel-control"
@@ -63,9 +62,13 @@ $this->title = 'Yii Paracordium Магазин';
          <div class="row text-center">
              <h4>Товари</h4>
              <?php                   
+             
              $tovar = Item::find()->all();
             // var_dump($tovar); die();
+             
               foreach ($tovar as $value) {
+               $tmp = '<a href="#" class="btn btn-primary" onclick="addtoCart('.$value->id.')">Додати до кошика!</a>';
+               $tmp2 = (Yii::$app->user->isGuest) ? '<a href="#" class="btn btn-default">Виконайте вхід</a>' : $tmp ;
                echo'<div class="col-md-3 col-sm-6">
                    <div class="thumbnail">
                     <img id="img_'.$value->id.'" src="'.$value->imagesrc .'" width="100" alt="">
@@ -73,8 +76,7 @@ $this->title = 'Yii Paracordium Магазин';
                         <h3 id="txtItName_'.$value->id.'">'.$value->name .'</h3>
                         <p id="txtItDesc_'.$value->id.'">'.$value->description.'</p>
                         <p>
-                           <b id="txtItPrice_'.$value->id.'">'.$value->price.' грн.</b> <a href="#" class="btn btn-primary" onclick="addtoCart('.$value->id.')">Додати до кошика!</a>
-                        </p>
+                           <b id="txtItPrice_'.$value->id.'">'.$value->price.' грн.</b> '.$tmp2.'</p>
                     </div>
                 </div>
             </div>';
